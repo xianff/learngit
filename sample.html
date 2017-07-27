@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
+<script type="text/javascript" src="js/register.js"></script>
+<link rel="stylesheet" href="css/sample.css" type="text/css"/>
+<link rel="stylesheet" type="text/css" href="css\default.css">
+<link rel="stylesheet" href="css/register.css" type="text/css"/>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl">
+
+<div class="overflow" id="hidebg">
+	<div class="head_flag"></div>
+	<h1>購入登録</h1>	
+		<div class="login_table1" >
+		<form>
+			<table>
+				<tr>
+					<td align="right" ><div class="label-name">口座番号</div></td>
+					<td ><div class="input_txt1"><input type="text" readonly="readonly" ng-model="info.number"></div></td>
+					<td align="right" ><div class="label-name">口座名称</div></td>
+					<td ><div class="input_txt1"><input type="text" readonly="readonly" ng-model="info.name"></div></td>
+				</tr>
+				<tr>
+					<td align="right" ><div class="label-name">銘柄ロード</div></td>
+					<td ><div class="input_txt"><input type="text" ng-model="info.exp" ng-disabled="txt_able"></div></td>
+					<td align="right" ><div class="label-name"><span ng-show="exp_name">銘柄名</span></div></td>
+					<td ><div class="input_txt"><input type="text" ng-model="info.exp_name" ng-show="exp_name" ng-disabled="txt_able"></div></td>
+				</tr>
+				<tr>
+					<td align="right" ><div class="label-name">約定日</div></td>
+					<td ><div class="input_txt5"><input type="date" ng-model="info.appoint_date" ng-disabled="txt_able"></div></td>
+					<td align="right" ><div class="label-name">受渡日</div></td>
+					<td ><div class="input_txt5"><input type="date" ng-model="info.ferry_date" ng-disabled="txt_able"></div></td>
+				</tr>
+				<tr>
+					<td align="right" ><div class="label-name">額面</div></td>
+					<td ><div class="input_txt2"><input type="text" ng-model="info.face_value" numcheck id="val1" ng-disabled="txt_able"></div><div class="input_txt3">千円</div></td>
+					<td align="right" ><div class="label-name"></div></td>
+					<td ><div class="input_txt"></div></td>
+				</tr>
+				<tr>
+					<td align="right" ><div class="label-name">約定単価</div></td>
+					<td ><div class="input_txt4"><input type="text" ng-model="info.unit_price" numcheck id="val2" ng-disabled="txt_able"></div><div class="input_txt3">円</div></td>
+					<td align="right" ><div class="label-name">約定金額</div></td>
+					<td ><div class="input_txt4"><input type="text" ng-model="info.appoint_value" numcheck id="val3" ng-disabled="txt_able"></div><div class="input_txt3">円</div></td>
+				</tr>
+				<tr>
+					<td align="right" ><div class="label-name">事由</div></td>
+					<td ><select ng-model="info.selectedReason" ng-options="x for x in info.reasons" ng-disabled="txt_able"></select></td>
+					<td align="right" ><div class="label-name">預け金区分</div></td>
+					<td ><select ng-model="info.selectedType" ng-options="x for x in info.types" ng-disabled="txt_able"></select></td>
+				</tr>
+				<tr>
+					<td align="right" ><div class="label-name">証券区分</div></td>
+					<td ><select ng-model="info.selectedDiffer" ng-options="x for x in info.differs" ng-disabled="txt_able"></select></td>
+					<td align="right" ><div class="label-name">取引目的</div></td>
+					<td ><select ng-model="info.selectedGoal" ng-options="x for x in info.goals" ng-disabled="txt_able"></select></td>
+				</tr>
+			</table>
+			<div class="btn-group">
+				<button class="btn-action" ng-show="btn_show" ng-click="view()">実行</button>
+				<button class="btn-end" ng-show="btn_show">終了</button>
+				<button class="btn-clear" ng-show="btn_show" ng-click="reset()">クリア</button>
+				<button class="btn-ok" ng-show="!btn_show" onclick="goLogin()">OK</button>
+				<button class="btn-cancel" ng-show="!btn_show" ng-click="view()">取消</button>
+			</div>
+			</form>
+		</div>
+</div>
+		<div id="overflow_top_login" class="overflow_login" >
+			<div class="msg_head">警告確認</div>
+			<p>画面のデータを登録しますか?</p>
+			<div class="msg_line"></div>
+			<button class="msg_btn_ok" ng-click="rtnIndex()">OK</button>
+			<button class="msg_btn_cancel" onclick="divHiddenLogin()">キャンセル</button>
+		</div> 
+	<div id="fade" class="black_overlay"></div>	
+<script>
+var app = angular.module('myApp', []);
+	app.controller('myCtrl', function($scope) {
+	$scope.info ={number:"101-6020038",name:"金融工学研究センター",reasons:["1：一般購入", "2：新発引受", "3：簿残振替", "4：売りオぺ"],types:["1：日銀当座預け金", "2：本支店勘定", "3：普通預け金"],differs:["1：本券", "2：登録", "3：自社振決", "4：他社振決"],goals:["1：余資運用", "2：ボートフォリオ对策", "3：收益对策", "4：その他"]};
+	$scope.reset = function() {
+		$scope.info ={number:"101-6020038",name:"金融工学研究センター",exp:"",appoint_date:"",ferry_date:"",face_value:"",unit_price:"",appoint_value:"",reasons:["1：一般購入", "2：新発引受", "3：簿残振替", "4：売りオぺ"],types:["1：日銀当座預け金", "2：本支店勘定", "3：普通預け金"],differs:["1：本券", "2：登録", "3：自社振決", "4：他社振決"],goals:["1：余資運用", "2：ボートフォリオ对策", "3：收益对策", "4：その他"]};
+    };
+	$scope.exp_name = false;
+	$scope.btn_show = true;
+	$scope.txt_able = false;
+	$scope.view = function() {	
+        $scope.exp_name = !$scope.exp_name;
+		$scope.btn_show = !$scope.btn_show;
+		$scope.txt_able = !$scope.txt_able;
+    };
+	$scope.rtnIndex = function() {	
+        alert("success");
+    };
+	});
+	app.directive("numcheck", function() {
+		return {  
+				restrict:"AEC",  
+				template:"",  
+				replace:{
+				id:"="
+			},  
+			link: function(scope, element, attr){
+				element.bind("change",function(){
+					valCheck(attr.id);
+				});
+			},
+		}  
+    }); 
+	function valCheck(val){
+		var temp = document.getElementById(""+val+"").value;
+		if(temp != ""){
+			  var re = /^\d+\.?\d+$/;
+			  if (!re.test(temp)){
+					document.getElementById(""+val+"").value = "";
+					alert('Please enter number');
+			  }else{
+					document.getElementById(""+val+"").value = formatNum(temp);
+			  }     
+		}
+	  }
+    function formatNum(str){
+		var newStr = "";
+		var count = 0;
+		
+		if(str.indexOf(".")==-1){
+		   for(var i=str.length-1;i>=0;i--){
+				if(count % 3 == 0 && count != 0){
+					newStr = str.charAt(i) + "," + newStr;
+				}else{
+					newStr = str.charAt(i) + newStr;
+				}
+				count++;
+		   }
+		}else{
+		   for(var i = str.indexOf(".")-1;i>=0;i--){
+				if(count % 3 == 0 && count != 0){
+				   newStr = str.charAt(i) + "," + newStr;
+				}else{
+				   newStr = str.charAt(i) + newStr; //逐个字符相接起来
+				}
+				count++;
+		  }
+		  var num = str.length-str.indexOf(".");
+		  //newStr = newStr + (str + "00").substr((str + "00").indexOf("."),3);
+		  newStr = newStr + str.substr(str.indexOf("."),num);
+		}
+		return newStr;
+	  }
+</script>
+
+</body>
+</html>
